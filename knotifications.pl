@@ -172,7 +172,7 @@ sub check_for_updates {
 		use LWP::UserAgent;
 		use HTTP::Request;
 
-		$request = HTTP::Request->new(GET => 'http://pidgin-knotifications.googlecode.com/svn/trunk/latest-linux-version.txt');
+		$request = HTTP::Request->new(GET => 'https://github.com/gzuaps/pidgin-knotifications/blob/master/latest-linux-version.txt');
 
 		$ua = LWP::UserAgent->new();
 		$response = $ua->request($request);
@@ -180,7 +180,7 @@ sub check_for_updates {
 		
 		if ($latest =~ '^\d\.\d\.\d$' && $latest ne $version) {
 			show_popup('Pidgin KDE Notifications: update available (' . $latest . ')',
-					'<a href="http://code.google.com/p/pidgin-knotifications/downloads/detail?name=knotifications-' . $latest . '.pl">Open download page</a>',
+					'<a href="https://github.com/gzuaps/pidgin-knotifications/blob/master/knotifications.pl">Open download page</a>',
 						$duration, $icon, $libnotify, 1);
 		}
 		exit(0);
