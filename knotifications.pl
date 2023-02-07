@@ -177,8 +177,12 @@ sub check_for_updates {
 		$ua = LWP::UserAgent->new();
 		$response = $ua->request($request);
 		$latest = $response->decoded_content();
-		
-                Purple::Debug::misc("knotifications", "latest: $latest\n");
+
+                # latest has line feed
+                chomp($latest);
+	        
+                #Purple::Debug::misc("knotifications", "version: $versionl\n");
+                #Purple::Debug::misc("knotifications", "latest: $latestl\n");
 
 		if ($latest =~ '^\d\.\d\.\d$' && $latest ne $version) {
 			show_popup('Pidgin KDE Notifications: update available (' . $latest . ')',
