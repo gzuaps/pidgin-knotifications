@@ -179,8 +179,9 @@ sub check_for_updates {
 		$latest = $response->decoded_content();
 
                 # latest has line feed
-                chomp($latest);
-	        
+                #chomp($latest);
+                $latest = trim($latest);	       
+ 
                 #Purple::Debug::misc("knotifications", "version: $versionl\n");
                 #Purple::Debug::misc("knotifications", "latest: $latestl\n");
 
@@ -447,4 +448,12 @@ sub buddy_status_changed_handler {
           }
 
         }
+}
+
+sub trim($)
+{
+  my $string = shift;
+  $string =~ s/^\s+//;
+  $string =~ s/\s+$//;
+  return $string;
 }
