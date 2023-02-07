@@ -417,7 +417,6 @@ sub signed_on_handler
         my $conn = shift;
         #Purple::Debug::misc("knotifications", "signed-on (" . $conn->get_account()->get_username() . ")\n");
         $no_signed_on_popups = 0;
-        # give 3 second grace period before notifying?
         $no_signed_on_popups_timeout = time() + 3;
 }
 
@@ -443,7 +442,7 @@ sub buddy_status_changed_handler {
 
           my $regex_ignore = Purple::Prefs::get_string("/plugins/core/perl_knotifications/signon_regex");
           if ($name =~ m/$regex_ignore/ || $alias =~ m/$regex_ignore/) {
-                  Purple::Debug::misc("knotifications", "Ignored (regex) sign on event for $alias ($name)\n");
+                  Purple::Debug::misc("knotifications", "Ignored (regex) changed status event for $alias ($name)\n");
           } else {
                   if ($name ne $alias) {
                           show_popup("$message", "$alias ($name)", $duration,  get_icon($buddy),
