@@ -196,6 +196,8 @@ sub check_for_updates {
 
 sub show_popup {
 	my ($title, $text, $duration, $icon, $libnotify, $raw_html) = @_;
+        #Purple::Debug::misc("knotifications", "show_popup duration: $duration\n");
+        if ( $duration == 0) { $duration = 10 };
 	if (Purple::Prefs::get_bool("/plugins/core/perl_knotifications/libnotify")) {
 		if (!$raw_html) {
 			# replace non-(alphanumeric _ & # ;) with the corresponding HTML escape code
@@ -205,13 +207,15 @@ sub show_popup {
 		# so we don't want to have any in the string
 		$title =~ s/(['])/'"'/ge;
 		$text =~ s/(['])/'"'/ge;
-		
+
 		$duration = $duration * 1000;
+
 		if ($icon) {
-			system("notify-send -u low -t $duration -i $icon --app-name 'Pidgin' \'$title\' \'$text\' &");
+			system("notify-send  --hint=int:transient:1 -u low -t $duration -i $icon --app-name 'Pidgin' \'$title\' \'$text\' &");
 		} else {
-			system("notify-send -u low -t $duration  --app-name 'Pidgin' \'$title\' \'$text\' &");
+			system("notify-send  --hint=int:transient:1 -u low -t $duration --app-name 'Pidgin' \'$title\' \'$text\' &");
 		}
+                #Purple::Debug::misc("knotifications", "notify-send -u low -t $duration -i $icon --app-name 'Pidgin' \"$title\" \"$text\" & \n");
 	} else {
 		decode_entities($title);
 		decode_entities($text);
@@ -219,13 +223,14 @@ sub show_popup {
 		# so we don't want to have any in the string
 		$title =~ s/(['])/'"'/ge;
 		$text =~ s/(['])/'"'/ge;
+
 		if ($icon) {
 			system("kdialog --title \'$title\' --icon $icon --passivepopup \'$text\' $duration &");
 		} else {
 			system("kdialog --title \'$title\' --passivepopup \'$text\' $duration &");
 		}
+                #Purple::Debug::misc("knotifications", "kdialog --title \"$title\" --icon \"$icon\" --passivepopup \"$text\" $duration & \n");
 	}
-	#Purple::Debug::misc("knotifications", "kdialog --title \"$title\" --icon \"$icon\" --passivepopup \"$text\" $duration & \n");
 }
 
 sub get_icon {
@@ -421,6 +426,8 @@ sub buddy_status_changed_handler {
         my ($buddy, $account) = @_;
         my $name = $buddy->get_name();
         my $alias = $buddy->get_alias();
+
+        my $duration = Purple::Prefs::get_int("/plugins/core/perl_knotifications/popup_duration");
 
         if (Purple::Prefs::get_bool("/plugins/core/perl_knotifications/popup_status_changed_enable")) {
 
