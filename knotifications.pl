@@ -197,7 +197,7 @@ sub check_for_updates {
 sub show_popup {
 	my ($title, $text, $duration, $icon, $libnotify, $raw_html) = @_;
         #Purple::Debug::misc("knotifications", "show_popup duration: $duration\n");
-        if ( $duration == 0) { $duration = 10 };
+        #if ( $duration == 0) { $duration = 10 };
 	if (Purple::Prefs::get_bool("/plugins/core/perl_knotifications/libnotify")) {
 		if (!$raw_html) {
 			# replace non-(alphanumeric _ & # ;) with the corresponding HTML escape code
